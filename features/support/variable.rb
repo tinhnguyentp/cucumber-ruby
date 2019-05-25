@@ -1,4 +1,4 @@
 module CucumberVariables
-  TESTMAIL = ENV['USER']
+  USER = ENV['USER']
   PASSWORD = ENV['PASSWORD']
 end

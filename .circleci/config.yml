@@ -1,0 +1,41 @@
+version: 2
+
+general:
+  branches:
+    only:
+      - never-build
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.11
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run proxy
+          command: |
+            docker pull owasp/zap2docker-stable
+            docker run --name zap -u zap -p 8080:8080 -i owasp/zap2docker-stable zap.sh -daemon -host 0.0.0.0 -port 8080
+          background: true
+      - run:
+          name: Wait for Proxy
+          command: |
+            echo Wait for container/port to become active
+            echo Get/save container ip address (IP_ADDRESS)
+      - run:
+          name: Run Intergation test project
+          command: |
+            cucumber /features
+
+workflows:
+  version: 2
+  scheduled-workflow:
+    triggers:
+      - schedule:
+#          cron: "0 4 * * *"
+          filters:
+            branches:
+              only: master
+    jobs:
+      - build

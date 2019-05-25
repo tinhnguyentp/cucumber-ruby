@@ -1,4 +1,5 @@
-When('user {string} signs in') do |email|
+When('user signs in') do
   @login.load
-  @login.sign_in(email, CucumberVariables::PASSWORD)
+  @login.sign_in(CucumberVariables::USER, CucumberVariables::PASSWORD)
+  sleep(20)
 end
