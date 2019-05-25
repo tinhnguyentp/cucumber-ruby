@@ -1,12 +1,17 @@
 version: 2
 
+# build job parameters as a template
+defaults:
+  working_directory: ~/app
+  docker:
+    # the Docker image with Cypress dependencies
+    - image: owasp/zap2docker-stable
+
+
 jobs:
   build:
-    docker:
-      - image: owasp/zap2docker-stable
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Run proxy
           command: |
