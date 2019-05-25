@@ -1,14 +1,9 @@
 version: 2
 
-general:
-  branches:
-    only:
-      - never-build
-
 jobs:
   build:
     docker:
-      - image: circleci/node:8.11
+      - image: owasp/zap2docker-stable
     steps:
       - checkout
       - setup_remote_docker
