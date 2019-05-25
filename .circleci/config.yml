@@ -4,7 +4,6 @@ version: 2
 defaults:
   working_directory: ~/app
   docker:
-    # the Docker image with Cypress dependencies
     - image: owasp/zap2docker-stable
 
 
@@ -23,6 +22,8 @@ jobs:
           command: |
             echo Wait for container/port to become active
             echo Get/save container ip address (IP_ADDRESS)
+  test:
+    steps:
       - run:
           name: Run Intergation test project
           command: |
@@ -30,11 +31,9 @@ jobs:
 
 workflows:
   version: 2
-  scheduled-workflow:
-    triggers:
-      - schedule:
-          filters:
-            branches:
-              only: master
+  build_and_test:
     jobs:
       - build
+      - test:
+        requires:
+          - build
