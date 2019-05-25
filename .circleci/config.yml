@@ -1,14 +1,9 @@
 version: 2
 
-# build job parameters as a template
-defaults:
-  working_directory: ~/app
-  docker:
-    - image: owasp/zap2docker-stable
-
-
 jobs:
   build:
+    docker:
+      - image: owasp/zap2docker-stable
     steps:
       - checkout
       - run:
@@ -22,18 +17,7 @@ jobs:
           command: |
             echo Wait for container/port to become active
             echo Get/save container ip address (IP_ADDRESS)
-  test:
-    steps:
       - run:
           name: Run Intergation test project
           command: |
             cucumber /features
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - test:
-        requires:
-          - build
